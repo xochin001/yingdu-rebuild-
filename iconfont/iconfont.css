@@ -1,0 +1,35 @@
+@font-face {
+	font-family: "iconfont";
+  src: url('~@/iconfont/iconfont.ttf'); /* IE9 */
+
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 28px;
+  font-style: normal;
+  color: #C0A659;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icontousujianyi-copy:before {
+  content: "\e600";
+}
+
+.iconwodehuodong:before {
+  content: "\e81d";
+}
+
+.iconwodeqiaquan:before {
+  content: "\e691";
+}
+
+.iconshezhi:before {
+  content: "\e71b";
+}
+
+.iconhuiyuanjifen1:before {
+  content: "\e672";
+}
+

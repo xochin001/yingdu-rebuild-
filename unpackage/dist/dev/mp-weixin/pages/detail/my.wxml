@@ -1,0 +1,1 @@
+<view data-event-opts="{{[['tap',[['goTouserDetail']]]]}}" class="users" bindtap="__e"><image class="users-img _img" src="{{avator}}" alt></image></view>

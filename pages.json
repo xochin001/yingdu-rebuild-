@@ -1,0 +1,58 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "英度云商"
+			}
+		}
+	    ,{
+            "path" : "pages/my/my",
+            "style" : {}
+        },{
+			"path": "pages/benefits/benefits",
+			"style" : {
+				"navigationBarTitleText": "优惠券列表"
+			}
+		},{
+			"path": "pages/shops/shops",
+			"style" : {
+				"navigationBarTitleText": "商铺列表"
+			}
+		}
+        ,{
+            "path" : "pages/point/point",
+            "style" : {"navigationBarTitleText": "优惠券列表"}
+        }
+        ,{
+            "path" : "pages/card/card",
+            "style" : {"navigationBarTitleText": "卡券列表"}
+        }
+        ,{
+            "path" : "pages/promotion/promotion",
+            "style" : {"navigationBarTitleText": "活动列表"}
+        }
+        ,{
+            "path" : "pages/suggest/suggest",
+            "style" : {"navigationBarTitleText": "投诉建议,"}
+        }
+        ,{
+            "path" : "pages/regist/regist",
+            "style" : {"navigationBarTitleText": "会员设置"}
+        }
+        ,{
+            "path" : "pages/picture/picture",
+            "style" : {"navigationBarTitleText": "拍摄小票"}
+        }
+        ,{
+            "path" : "pages/memberedit/memberedit",
+            "style" : {}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "英度云商",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#F8F8F8"
+	}
+}

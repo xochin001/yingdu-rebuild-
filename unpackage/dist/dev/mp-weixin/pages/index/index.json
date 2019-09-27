@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "英度云商",
+  "usingComponents": {
+    "benefit": "/pages/detail/benefit",
+    "category": "/pages/detail/category",
+    "floor": "/pages/detail/floor",
+    "uni-search": "/components/lee-search/lee-search",
+    "my": "/pages/detail/my",
+    "goto-login": "/pages/components/login"
+  }
+}

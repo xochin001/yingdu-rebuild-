@@ -1,0 +1,23 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/my/my",
+    "pages/benefits/benefits",
+    "pages/shops/shops",
+    "pages/point/point",
+    "pages/card/card",
+    "pages/promotion/promotion",
+    "pages/suggest/suggest",
+    "pages/regist/regist",
+    "pages/picture/picture",
+    "pages/memberedit/memberedit"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "英度云商",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}

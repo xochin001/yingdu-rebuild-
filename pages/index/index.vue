@@ -15,7 +15,7 @@
 			<category v-if='tabIndex==1'></category>
 			<floor v-if='tabIndex==2'></floor>
 	</view>
-	<my :avator= "avatar"/>
+	<my :avator= "avatar" @gtLogin="gtLogin"/>
 </view>
 </template>
 
@@ -64,10 +64,12 @@
 			if(this.hasLogin) {
 				this.showLogin = ""
 				this.avatar = this.userInfo.avatarUrl
+			}if(this.tempLogin){
+				this.showLogin = ""
 			}
 		},
 		computed:{
-			...mapState(['userInfo','tmpLogin','hasLogin'])
+			...mapState(['userInfo','tempLogin','hasLogin'])
 		},
 		methods: {
 			//...mapMutations([])
@@ -77,8 +79,13 @@
 			     this.scrollInto = this.tabBars[index].id
 		},
 		hiddendiag(){
-			this.showLogin = ""
+			uni.redirectTo({
+				url: '/pages/index/index'
+			})
 		},
+		gtLogin(){
+			this.showLogin = 'login'
+		}
 		
 	},
 }

@@ -38,7 +38,7 @@
         }
         ,{
             "path" : "pages/regist/regist",
-            "style" : {"navigationBarTitleText": "会员设置"}
+            "style" : {"navigationBarTitleText": "注册会员"}
         }
         ,{
             "path" : "pages/picture/picture",
@@ -46,7 +46,7 @@
         }
         ,{
             "path" : "pages/memberedit/memberedit",
-            "style" : {}
+            "style" : {"navigationBarTitleText": "会员修改"}
         }
     ],
 	"globalStyle": {

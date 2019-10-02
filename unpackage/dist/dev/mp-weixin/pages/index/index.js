@@ -122,7 +122,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -150,7 +150,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 12);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var gotoLogin = function gotoLogin() {return Promise.all(/*! import() | pages/components/login */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/components/login")]).then(__webpack_require__.bind(null, /*! @/pages/components/login */ 103));};var benefit = function benefit() {return Promise.all(/*! import() | pages/detail/benefit */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/detail/benefit")]).then(__webpack_require__.bind(null, /*! @/pages/detail/benefit */ 118));};var category = function category() {return Promise.all(/*! import() | pages/detail/category */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/detail/category")]).then(__webpack_require__.bind(null, /*! @/pages/detail/category */ 125));};var floor = function floor() {return Promise.all(/*! import() | pages/detail/floor */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/detail/floor")]).then(__webpack_require__.bind(null, /*! @/pages/detail/floor */ 132));};var my = function my() {return __webpack_require__.e(/*! import() | pages/detail/my */ "pages/detail/my").then(__webpack_require__.bind(null, /*! @/pages/detail/my */ 139));};var uniSearch = function uniSearch() {return __webpack_require__.e(/*! import() | components/lee-search/lee-search */ "components/lee-search/lee-search").then(__webpack_require__.bind(null, /*! @/components/lee-search/lee-search */ 146));};var _default =
+var _vuex = __webpack_require__(/*! vuex */ 12);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var gotoLogin = function gotoLogin() {return Promise.all(/*! import() | pages/components/login */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/components/login")]).then(__webpack_require__.bind(null, /*! @/pages/components/login */ 104));};var benefit = function benefit() {return Promise.all(/*! import() | pages/detail/benefit */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/detail/benefit")]).then(__webpack_require__.bind(null, /*! @/pages/detail/benefit */ 119));};var category = function category() {return Promise.all(/*! import() | pages/detail/category */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/detail/category")]).then(__webpack_require__.bind(null, /*! @/pages/detail/category */ 126));};var floor = function floor() {return Promise.all(/*! import() | pages/detail/floor */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/detail/floor")]).then(__webpack_require__.bind(null, /*! @/pages/detail/floor */ 133));};var my = function my() {return __webpack_require__.e(/*! import() | pages/detail/my */ "pages/detail/my").then(__webpack_require__.bind(null, /*! @/pages/detail/my */ 140));};var uniSearch = function uniSearch() {return __webpack_require__.e(/*! import() | components/lee-search/lee-search */ "components/lee-search/lee-search").then(__webpack_require__.bind(null, /*! @/components/lee-search/lee-search */ 147));};var _default =
 {
   components: {
     benefit: benefit,
@@ -188,10 +188,12 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _objectSpread(target) {
     if (this.hasLogin) {
       this.showLogin = "";
       this.avatar = this.userInfo.avatarUrl;
+    }if (this.tempLogin) {
+      this.showLogin = "";
     }
   },
   computed: _objectSpread({},
-  (0, _vuex.mapState)(['userInfo', 'tmpLogin', 'hasLogin'])),
+  (0, _vuex.mapState)(['userInfo', 'tempLogin', 'hasLogin'])),
 
   methods: {
     //...mapMutations([])
@@ -201,8 +203,14 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _objectSpread(target) {
       this.scrollInto = this.tabBars[index].id;
     },
     hiddendiag: function hiddendiag() {
-      this.showLogin = "";
+      uni.redirectTo({
+        url: '/pages/index/index' });
+
+    },
+    gtLogin: function gtLogin() {
+      this.showLogin = 'login';
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

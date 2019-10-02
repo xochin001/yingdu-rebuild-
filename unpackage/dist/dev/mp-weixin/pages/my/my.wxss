@@ -237,16 +237,14 @@ page,
   line-height: 60rpx;
 }
 .btn-cancel {
-  width: 80%;
-  height: 66rpx;
-  line-height: 66rpx;
-  border-radius: 100rpx;
-  font-size: 30rpx;
-  background: #A5663E;
-  color: #fff;
   position: fixed;
   bottom: 1rpx;
   display: block;
   text-align: center;
+}
+.b-t {
+  height: 100rpx;
+  width: 600rpx;
+  margin: 0 auto;
 }
 

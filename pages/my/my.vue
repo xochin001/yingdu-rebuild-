@@ -1,6 +1,5 @@
 <template>
 	<view class="container">
-		<goto-login   :modalName="showLogin"  @hiddendiag="hiddendiag"   /> 
 		<!-- 画布来制作头像和会员卡等 -->
 		<canvas class ="userinfo" canvas-id="userinfo"></canvas>
 		<view  class="Camera" 			
@@ -21,14 +20,22 @@
 					<p class="m-t">{{item.title}}</p>
 					<p class="m-c">{{item.data}}</p>
 				</view>
-				<button class="btn-cancel" @click="backtitle">返回</button>
+				<view class="btn-cancel margin-tb-xl">
+					<button class="cu-btn b-t block lg bg-brown2 text-white" @click="backtitle">返回</button>
+				</view>
 			</view>
 		
 <!-- 	登录功能框 -->		
 	<view class="function" v-else>
 		<view class="functionicon" v-for="item in listData" :key="item.id" @click="showFunction(item)">
-			<span class="iconfont" :class="item.icon" ></span>
-				<p class="title">{{item.title}}</p>
+				<view v-if="item.id ==5 && ismember">           <!-- 如果是会员了，注册会员的按钮就变成设置按钮 -->
+					<span class="iconfont iconshezhi" ></span>
+						<p class="title">设置</p>
+				</view>
+				<view v-else>
+					<span class="iconfont" :class="item.icon" ></span>
+						<p class="title">{{item.title}}</p>
+				</view>
 		</view>
 	</view>
 
@@ -57,26 +64,18 @@
 </template>
 
 <script>
-	//import {login} from '@/pages/utils/request'
-	import gotoLogin from '@/pages/components/login'
+	import {get} from '@/pages/utils/request'
 	import {mapState} from 'vuex'
 	let startY = 0, moveY = 0, pageAtTop = true;
 	export default {
-		components:{
-			gotoLogin,
-		},
-		onShow(){
-			console.log('???')
-			if(this.hasLogin){
-				this.avator = this.userInfo.avatarUrl
-				this.showLogin = ""
-			}
+		onLoad(){
+			this.avator = this.userInfo.avatarUrl
 		},
 		mounted() {
 			this.getDrawUserInfo()
 		},
 		computed:{
-			...mapState(['userInfo','hasLogin'])
+			...mapState(['userInfo','hasLogin','ismember' ])
 		},
 		data() {
 			return {
@@ -105,18 +104,18 @@
 					url:"/pages/suggest/suggest",	
 					id:4 ,
 					},{
-					title: "设置",
+					title: "注册会员",
 					icon:"iconshezhi",
-					url:"/pages/memberedit/memberedit",
+					url:"/pages/regist/regist",
 					id:5,
-				}],
+					}],
 				memeberList :[{
 					title: "积分" ,
-					data: 99999 ,
+					data: 0,
 					url:"/pages/point/point"
 					},{
 					title: "等级",
-					data: "高级会员" ,
+					data: "初级会员" ,
 					url:"/pages/point/point"
 					},{
 					title: "优惠券",
@@ -152,8 +151,6 @@
 				 ctx.setFontSize(12)
 				 ctx.fillText(this.userNum ,35 ,160)
 				 ctx.draw(true)
-				 
-
 			 },
 
 			 coverTouchstart(e){
@@ -207,34 +204,68 @@
 			},
 			stopPrevent(){},
 			showFunction(item){
-				if(item.id === 1) {
-					if(this.hasLogin) {
-						this.nomemeber = true
+				if(item.id ===5) {
+					if(this.ismember){
+						uni.navigateTo({
+							url: '/pages/memberedit/memberedit'
+						})
 						return
 					}
-					uni.showToast({
-						title: '需要先登录',
-						icon:'none'
-					})
-					setTimeout(() => {
-						this.showLogin ="login"
-					}, 1000)
-					
+					else if(this.hasLogin) {
+						uni.showToast({
+							title: '需要先注册会员',
+							icon:'none'
+						})
+						setTimeout(() => {
+							uni.navigateTo({
+								url: '/pages/regist/regist'
+							})
+						}, 1000)
+						return
+					}
+				}
+				if(item.id === 1) {				//会员积分的页面单独提取逻辑实现。
+					if(this.ismember){
+						this.nomemeber = true
+						this.getmemberuser().then( res =>{
+							this.memeberList[0].data = res.data[0].point
+							this.memeberList[1].data = res.level
+						})
+						return
+					}
+					else if(this.hasLogin) {
+						uni.showToast({
+							title: '需要先注册会员',
+							icon:'none'
+						})
+						setTimeout(() => {
+							uni.navigateTo({
+								url: '/pages/regist/regist'
+							})
+						}, 1000)
+						return
+					}
 				}
 				else{
-					if(this.hasLogin) {
+					if(this.ismember) {			//如果是会员登录。直接跳转
 						uni.navigateTo({
 							url: item.url
 						})
 						return
 					}
-					uni.showToast({
-						title: '需要先登录',
-						icon:'none'
-					})
-					setTimeout(() => {
-						this.showLogin ="login"
-					}, 1000)
+					else if( this.hasLogin) {	//如果是非会员，需要跳转到会员注册页面
+						uni.showToast({
+							title: '需要先注册会员',
+							icon:'none'
+						})
+						setTimeout(() => {
+							uni.navigateTo({
+								url: '/pages/regist/regist'
+							})
+						}, 1000)
+						return
+					}
+
 				}
 			 },
 			 //关闭会员积分的页面
@@ -249,19 +280,24 @@
 				 })
 			 },
 			 showPoint(item ){
-				 if(this.hasLogin){
-					 uni.navigateTo({
-					 	url: item.url
-					 })
-					 return
+				 if(this.ismember){
+				 	uni.navigateTo({
+				 		url: item.url
+				 	})
+				 	return
 				 }
-					uni.showToast({
-						title: '需要先登录',
-						icon:'none'
-					})
-					setTimeout(() => {
-						this.showLogin ="login"
-					}, 1000)
+				 else if(this.hasLogin) {
+				 	uni.showToast({
+				 		title: '需要先注册会员',
+				 		icon:'none'
+				 	})
+				 	setTimeout(() => {
+				 		uni.navigateTo({
+				 			url: '/pages/regist/regist'
+				 		})
+				 	}, 1000)
+				 	return
+				 }
 			 },
 			 hiddendiag(){
 			 	this.showLogin = ""
@@ -269,6 +305,13 @@
 					url:'/pages/my/my'
 				})
 			 },
+			async getmemberuser( ){
+				const data = await get('/api/XCX/getmemberuser',{
+					openid: this.userInfo.openId
+				})
+				return data
+			}
+			 
 		},
 	}
 </script>
@@ -455,20 +498,18 @@
 	}
 	
 	.btn-cancel {
-		width: 80%;
-		height: 66upx;
-		line-height: 66upx;
-		border-radius: 100upx;
-		font-size: $uni-font-size-base + 2upx;
-		background: $title-color-active ;
-		color: #fff;
-		//margin: 20upx auto ;
+
 		position: fixed;
 		bottom: 1upx;
 		display: block;
 		text-align:  center;
 	}
+	.b-t {
+		height: 100upx;
+		width: 600upx;
+		margin: 0 auto;
 	
+	}
 
 
 </style>

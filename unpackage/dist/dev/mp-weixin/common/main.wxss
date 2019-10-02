@@ -26,6 +26,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*每个页面公共css */
 /*
   ColorUi for uniApp  v2.1.6 | by 文晓港 2019-05-31 10:44:24
@@ -1178,7 +1193,7 @@ to {
 	        filter: grayscale(1);
 }
 .cu-list+.cu-list {
-	margin-top: 30rpx
+	margin-top: 0rpx
 }
 .cu-list>.cu-item {
 	-webkit-transition: all .6s ease-in-out 0s;

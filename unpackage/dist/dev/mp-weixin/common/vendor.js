@@ -733,7 +733,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1497,7 +1497,7 @@ uni$1;exports.default = _default;
 
 /***/ }),
 
-/***/ 108:
+/***/ 109:
 /*!*******************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/wafer2-client-sdk/index.js ***!
   \*******************************************************/
@@ -1505,11 +1505,11 @@ uni$1;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var constants = __webpack_require__(/*! ./lib/constants */ 109);
-var login = __webpack_require__(/*! ./lib/login */ 110);
-var Session = __webpack_require__(/*! ./lib/session */ 111);
-var request = __webpack_require__(/*! ./lib/request */ 112);
-var Tunnel = __webpack_require__(/*! ./lib/tunnel */ 114);
+var constants = __webpack_require__(/*! ./lib/constants */ 110);
+var login = __webpack_require__(/*! ./lib/login */ 111);
+var Session = __webpack_require__(/*! ./lib/session */ 112);
+var request = __webpack_require__(/*! ./lib/request */ 113);
+var Tunnel = __webpack_require__(/*! ./lib/tunnel */ 115);
 
 var _exports = module.exports = {
   login: login.login,
@@ -1534,7 +1534,7 @@ Object.keys(constants).forEach(function (key) {
 
 /***/ }),
 
-/***/ 109:
+/***/ 110:
 /*!***************************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/wafer2-client-sdk/lib/constants.js ***!
   \***************************************************************/
@@ -1564,7 +1564,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 110:
+/***/ 111:
 /*!***********************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/wafer2-client-sdk/lib/login.js ***!
   \***********************************************************/
@@ -1578,8 +1578,8 @@ function _defineProperty(obj, key, value) {if (key in obj) {Object.definePropert
                                                                                                                                                                                                                          * 这里对登录的 SDK 进行重构
                                                                                                                                                                                                                          * 微信公告：https://developers.weixin.qq.com/blogdetail?action=get_post_info&lang=zh_CN&token=&docid=0000a26e1aca6012e896a517556c01
                                                                                                                                                                                                                          */
-var constants = __webpack_require__(/*! ./constants */ 109);
-var Session = __webpack_require__(/*! ./session */ 111);
+var constants = __webpack_require__(/*! ./constants */ 110);
+var Session = __webpack_require__(/*! ./session */ 112);
 
 /**
                                      * 微信登录，获取 code 和 encryptData
@@ -1743,7 +1743,7 @@ module.exports = { login: login, setLoginUrl: setLoginUrl, loginWithCode: loginW
 
 /***/ }),
 
-/***/ 111:
+/***/ 112:
 /*!*************************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/wafer2-client-sdk/lib/session.js ***!
   \*************************************************************/
@@ -1751,7 +1751,7 @@ module.exports = { login: login, setLoginUrl: setLoginUrl, loginWithCode: loginW
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var constants = __webpack_require__(/*! ./constants */ 109);
+var constants = __webpack_require__(/*! ./constants */ 110);
 var SESSION_KEY = 'weapp_session_' + constants.WX_SESSION_MAGIC_ID;
 
 var Session = {
@@ -1772,7 +1772,7 @@ module.exports = Session;
 
 /***/ }),
 
-/***/ 112:
+/***/ 113:
 /*!*************************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/wafer2-client-sdk/lib/request.js ***!
   \*************************************************************/
@@ -1780,10 +1780,10 @@ module.exports = Session;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var constants = __webpack_require__(/*! ./constants */ 109);
-var utils = __webpack_require__(/*! ./utils */ 113);
-var Session = __webpack_require__(/*! ./session */ 111);
-var loginLib = __webpack_require__(/*! ./login */ 110);
+var constants = __webpack_require__(/*! ./constants */ 110);
+var utils = __webpack_require__(/*! ./utils */ 114);
+var Session = __webpack_require__(/*! ./session */ 112);
+var loginLib = __webpack_require__(/*! ./login */ 111);
 
 var noop = function noop() {};
 
@@ -1901,7 +1901,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 113:
+/***/ 114:
 /*!***********************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/wafer2-client-sdk/lib/utils.js ***!
   \***********************************************************/
@@ -1930,7 +1930,7 @@ exports.extend = function extend(target) {
 
 /***/ }),
 
-/***/ 114:
+/***/ 115:
 /*!************************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/wafer2-client-sdk/lib/tunnel.js ***!
   \************************************************************/
@@ -1938,8 +1938,8 @@ exports.extend = function extend(target) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var requestLib = __webpack_require__(/*! ./request */ 112);
-var wxTunnel = __webpack_require__(/*! ./wxTunnel */ 115);
+var requestLib = __webpack_require__(/*! ./request */ 113);
+var wxTunnel = __webpack_require__(/*! ./wxTunnel */ 116);
 
 /**
                                        * 当前打开的信道，同一时间只能有一个信道打开
@@ -2469,7 +2469,7 @@ module.exports = Tunnel;
 
 /***/ }),
 
-/***/ 115:
+/***/ 116:
 /*!**************************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/wafer2-client-sdk/lib/wxTunnel.js ***!
   \**************************************************************/
@@ -3682,113 +3682,6 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 168:
-/*!********************************************************!*\
-  !*** F:/陈星的微信小程序/英度云商（重构）/pages/utils/graceChecker.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
- /**
-              数据验证（表单验证）
-              来自 grace.hcoder.net 
-              作者 hcoder 深海
-              */
-module.exports = {
-  error: '',
-  check: function check(data, rule) {
-    for (var i = 0; i < rule.length; i++) {
-      if (!rule[i].checkType) {return true;}
-      if (!rule[i].name) {return true;}
-      if (!rule[i].errorMsg) {return true;}
-      if (!data[rule[i].name]) {this.error = rule[i].errorMsg;return false;}
-      switch (rule[i].checkType) {
-        case 'string':
-          var reg = new RegExp('^.{' + rule[i].checkRule + '}$');
-          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
-          break;
-        case 'int':
-          var reg = new RegExp('^(-[1-9]|[1-9])[0-9]{' + rule[i].checkRule + '}$');
-          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
-          break;
-          break;
-        case 'between':
-          if (!this.isNumber(data[rule[i].name])) {
-            this.error = rule[i].errorMsg;
-            return false;
-          }
-          var minMax = rule[i].checkRule.split(',');
-          minMax[0] = Number(minMax[0]);
-          minMax[1] = Number(minMax[1]);
-          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
-            this.error = rule[i].errorMsg;
-            return false;
-          }
-          break;
-        case 'betweenD':
-          var reg = /^-?[1-9][0-9]?$/;
-          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
-          var minMax = rule[i].checkRule.split(',');
-          minMax[0] = Number(minMax[0]);
-          minMax[1] = Number(minMax[1]);
-          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
-            this.error = rule[i].errorMsg;
-            return false;
-          }
-          break;
-        case 'betweenF':
-          var reg = /^-?[0-9][0-9]?.+[0-9]+$/;
-          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
-          var minMax = rule[i].checkRule.split(',');
-          minMax[0] = Number(minMax[0]);
-          minMax[1] = Number(minMax[1]);
-          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
-            this.error = rule[i].errorMsg;
-            return false;
-          }
-          break;
-        case 'same':
-          if (data[rule[i].name] != rule[i].checkRule) {this.error = rule[i].errorMsg;return false;}
-          break;
-        case 'notsame':
-          if (data[rule[i].name] == rule[i].checkRule) {this.error = rule[i].errorMsg;return false;}
-          break;
-        case 'email':
-          var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
-          break;
-        case 'phoneno':
-          var reg = /^1[0-9]{10,10}$/;
-          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
-          break;
-        case 'zipcode':
-          var reg = /^[0-9]{6}$/;
-          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
-          break;
-        case 'reg':
-          var reg = new RegExp(rule[i].checkRule);
-          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
-          break;
-        case 'in':
-          if (rule[i].checkRule.indexOf(data[rule[i].name]) == -1) {
-            this.error = rule[i].errorMsg;return false;
-          }
-          break;
-        case 'notnull':
-          if (data[rule[i].name] == null || data[rule[i].name].length < 1) {this.error = rule[i].errorMsg;return false;}
-          break;}
-
-    }
-    return true;
-  },
-  isNumber: function isNumber(checkVal) {
-    var reg = /^-?[1-9][0-9]?.?[0-9]*$/;
-    return reg.test(checkVal);
-  } };
-
-/***/ }),
-
 /***/ 17:
 /*!*************************************************!*\
   !*** F:/陈星的微信小程序/英度云商（重构）/pages/store/index.js ***!
@@ -3804,12 +3697,17 @@ _vue.default.use(_vuex.default);
 
 var store = new _vuex.default.Store({
   state: {
-    hasLogin: false, //是否非会员登录
+    hasLogin: false, //是否非会员登录//只是注册了非会员
     userInfo: {}, //非会员数据
-    tempLogin: false, //临时访客登录
+    tempLogin: false, //临时访客登录    //这个是访客
     ismember: false, //是否是会员？
-    memberdata: {} //会员数据
+    memberdata: {}, //会员数据
+    time: 60, //倒计时数据
+    hastime: false //是否在倒计时
   },
+  getters: {
+    time: function time(state) {return state.time;} },
+
   mutations: {
     vuelogin: function vuelogin(state, provider) {
 
@@ -3832,13 +3730,21 @@ var store = new _vuex.default.Store({
     tempLogin: function tempLogin(state) {//临时登录凭证
       state.tempLogin = true;
     },
-    memberLogin: function memberLogin(state, mdata) {
+    memberLogin: function memberLogin(state, mdata) {//已注册会员的登录方法
       state.ismember = true;
       state.memberdata = mdata;
-      uni.setStorageSync({
+      uni.setStorage({
         key: 'memberInfo',
         data: mdata });
 
+    },
+    muttime: function muttime(state, data) {
+      state.time = data;
+      state.hastime = false;
+    },
+    mutcount: function mutcount(state, data) {
+      state.time--;
+      state.hastime = true;
     } },
 
 
@@ -9334,7 +9240,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -9355,14 +9261,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -9438,7 +9344,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9846,31 +9752,19 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 4:
-/*!***************************************!*\
-  !*** F:/陈星的微信小程序/英度云商（重构）/pages.json ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/***/ }),
-
-/***/ 40:
+/***/ 32:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 41);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 33);
 
 
 /***/ }),
 
-/***/ 41:
+/***/ 33:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -9901,7 +9795,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 42);
+module.exports = __webpack_require__(/*! ./runtime */ 34);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -9918,7 +9812,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 42:
+/***/ 34:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -10646,6 +10540,18 @@ if (hadRuntime) {
     return this || (typeof self === "object" && self);
   })() || Function("return this")()
 );
+
+
+/***/ }),
+
+/***/ 4:
+/*!***************************************!*\
+  !*** F:/陈星的微信小程序/英度云商（重构）/pages.json ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 /***/ }),
@@ -11553,7 +11459,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "英度云商" }, "pages/my/my": {}, "pages/benefits/benefits": { "navigationBarTitleText": "优惠券列表" }, "pages/shops/shops": { "navigationBarTitleText": "商铺列表" }, "pages/point/point": { "navigationBarTitleText": "优惠券列表" }, "pages/card/card": { "navigationBarTitleText": "卡券列表" }, "pages/promotion/promotion": { "navigationBarTitleText": "活动列表" }, "pages/suggest/suggest": { "navigationBarTitleText": "投诉建议," }, "pages/regist/regist": { "navigationBarTitleText": "会员设置" }, "pages/picture/picture": { "navigationBarTitleText": "拍摄小票" }, "pages/memberedit/memberedit": {} }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "英度云商", "navigationBarBackgroundColor": "#FFFFFF", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "英度云商" }, "pages/my/my": {}, "pages/benefits/benefits": { "navigationBarTitleText": "优惠券列表" }, "pages/shops/shops": { "navigationBarTitleText": "商铺列表" }, "pages/point/point": { "navigationBarTitleText": "优惠券列表" }, "pages/card/card": { "navigationBarTitleText": "卡券列表" }, "pages/promotion/promotion": { "navigationBarTitleText": "活动列表" }, "pages/suggest/suggest": { "navigationBarTitleText": "投诉建议," }, "pages/regist/regist": { "navigationBarTitleText": "注册会员" }, "pages/picture/picture": { "navigationBarTitleText": "拍摄小票" }, "pages/memberedit/memberedit": { "navigationBarTitleText": "会员修改" } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "英度云商", "navigationBarBackgroundColor": "#FFFFFF", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 
@@ -11566,6 +11472,113 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "appid": "" };exports.default = _default;
+
+/***/ }),
+
+/***/ 85:
+/*!********************************************************!*\
+  !*** F:/陈星的微信小程序/英度云商（重构）/pages/utils/graceChecker.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+ /**
+              数据验证（表单验证）
+              来自 grace.hcoder.net 
+              作者 hcoder 深海
+              */
+module.exports = {
+  error: '',
+  check: function check(data, rule) {
+    for (var i = 0; i < rule.length; i++) {
+      if (!rule[i].checkType) {return true;}
+      if (!rule[i].name) {return true;}
+      if (!rule[i].errorMsg) {return true;}
+      if (!data[rule[i].name]) {this.error = rule[i].errorMsg;return false;}
+      switch (rule[i].checkType) {
+        case 'string':
+          var reg = new RegExp('^.{' + rule[i].checkRule + '}$');
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'int':
+          var reg = new RegExp('^(-[1-9]|[1-9])[0-9]{' + rule[i].checkRule + '}$');
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+          break;
+        case 'between':
+          if (!this.isNumber(data[rule[i].name])) {
+            this.error = rule[i].errorMsg;
+            return false;
+          }
+          var minMax = rule[i].checkRule.split(',');
+          minMax[0] = Number(minMax[0]);
+          minMax[1] = Number(minMax[1]);
+          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
+            this.error = rule[i].errorMsg;
+            return false;
+          }
+          break;
+        case 'betweenD':
+          var reg = /^-?[1-9][0-9]?$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          var minMax = rule[i].checkRule.split(',');
+          minMax[0] = Number(minMax[0]);
+          minMax[1] = Number(minMax[1]);
+          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
+            this.error = rule[i].errorMsg;
+            return false;
+          }
+          break;
+        case 'betweenF':
+          var reg = /^-?[0-9][0-9]?.+[0-9]+$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          var minMax = rule[i].checkRule.split(',');
+          minMax[0] = Number(minMax[0]);
+          minMax[1] = Number(minMax[1]);
+          if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
+            this.error = rule[i].errorMsg;
+            return false;
+          }
+          break;
+        case 'same':
+          if (data[rule[i].name] != rule[i].checkRule) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'notsame':
+          if (data[rule[i].name] == rule[i].checkRule) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'email':
+          var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'phoneno':
+          var reg = /^1[0-9]{10,10}$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'zipcode':
+          var reg = /^[0-9]{6}$/;
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'reg':
+          var reg = new RegExp(rule[i].checkRule);
+          if (!reg.test(data[rule[i].name])) {this.error = rule[i].errorMsg;return false;}
+          break;
+        case 'in':
+          if (rule[i].checkRule.indexOf(data[rule[i].name]) == -1) {
+            this.error = rule[i].errorMsg;return false;
+          }
+          break;
+        case 'notnull':
+          if (data[rule[i].name] == null || data[rule[i].name].length < 1) {this.error = rule[i].errorMsg;return false;}
+          break;}
+
+    }
+    return true;
+  },
+  isNumber: function isNumber(checkVal) {
+    var reg = /^-?[1-9][0-9]?.?[0-9]*$/;
+    return reg.test(checkVal);
+  } };
 
 /***/ })
 

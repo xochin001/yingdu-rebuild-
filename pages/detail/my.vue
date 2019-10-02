@@ -1,10 +1,11 @@
 <template>
-	<view class="users" @click="goTouserDetail()">
+	<view class="users" @click="goTouserDetail()" @showLogin="showLogin">
 		<img :src='avator ' alt="" class="users-img">
 	</view>
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	export default {
 		props:{
 			avator: String
@@ -13,12 +14,24 @@
 			return{
 			}
 		},
+		computed:{
+			...mapState(['hasLogin'])
+		},
 		methods:{
 			goTouserDetail(){
-				uni.navigateTo({
-					url :'/pages/my/my'
-				})
-			}
+				if(this.hasLogin){
+					uni.navigateTo({
+						url :'/pages/my/my'
+					})
+					return
+				}else{
+					this.showLogin()
+				}
+
+			},
+			showLogin(){
+				this.$emit('gtLogin')
+			},
 		}
 	}
 </script>

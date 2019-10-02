@@ -1,5 +1,3 @@
 {
-  "usingComponents": {
-    "goto-login": "/pages/components/login"
-  }
+  "usingComponents": {}
 }

@@ -20,7 +20,7 @@
 				<view class="cu-bar bg-white justify-end">
 					<view class="action">
 						<button class="cu-btn bg-green " open-type="getUserInfo"  @getuserinfo="confirm">确定</button>
-						<button class="cu-btn line-green text-green margin-left" @tap="hideModal">取消</button>
+						<!-- <button class="cu-btn line-green text-green margin-left" @tap="hideModal">取消</button> -->
 						
 		
 					</view>
@@ -33,7 +33,7 @@
 
 <script>
 	import { mapState } from 'vuex';
-	import {host} from '@/pages/utils/request'
+	import {host ,get} from '@/pages/utils/request'
 	var qcloud = require("wafer2-client-sdk/index.js")
 	export default{
 		props:{
@@ -44,7 +44,7 @@
 			qcloud.setLoginUrl(host + "/api/login")
 		},
 		computed:{
-		...mapState(['hasLogin' ,'tempLogin'])
+		...mapState(['hasLogin' ,'tempLogin'])  //tempLogin 是一个临时登录凭证。可以看商店详情。
 		},
 		data(){
 			return{
@@ -66,8 +66,11 @@
 					  // 可使用本函数更新登录态
 					  qcloud.loginWithCode({
 					    success: res => {
-					      // this.setData({ userInfo: res, logged: true });
-					     // wx.setStorageSync("key", "value")
+							this.getmemberuser(res).then( pres =>{
+								console.log(pres)
+							   if(pres.length >1 )
+							   this.$store.commit('memberLogin' , pres)
+							})
 						 this.$store.commit('vuelogin',res)
 						 this.$emit('tologin')
 					    },
@@ -78,10 +81,15 @@
 					} else {
 					 qcloud.login({
 						 success: res => {
+							 // console.log(res.openId)
 						   wx.hideLoading()
+						   this.getmemberuser(res).then( pres =>{
+							   console.log(pres)
+							   if(pres)
+							   this.$store.commit('memberLogin' , pres[0])
+						   })
 						   this.$store.commit('vuelogin',res)
 						   this.$emit('hiddendiag')
-						   console.log(res)
 						   }
 						})
 					}		
@@ -95,6 +103,12 @@
 				this.$emit('hiddendiag')  //不同意 就给一个临时访问token ,退出就失效
 				
 			},		
+			async getmemberuser( res){
+				const data = await get('/api/XCX/getmemberuser',{
+					openid:res.openId
+				})
+				return data.data
+			}
 		}
 	}
 </script>

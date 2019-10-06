@@ -8,6 +8,7 @@
     "pages/card/card",
     "pages/promotion/promotion",
     "pages/suggest/suggest",
+    "pages/regist/fastregist",
     "pages/regist/regist",
     "pages/picture/picture",
     "pages/memberedit/memberedit"
@@ -20,5 +21,5 @@
     "backgroundColor": "#F8F8F8"
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap35.json"
+  "sitemapLocation": "sitemap60.json"
 }

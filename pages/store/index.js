@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		hasLogin: false,	//是否非会员登录//只是注册了非会员
-		userInfo: {},		//非会员数据
+		//hasLogin: false,	//是否非会员登录//只是注册了非会员
+		openids: {},		// 用户openid
 		tempLogin:false,	//临时访客登录    //这个是访客
 		ismember: false , //是否是会员？
 		memberdata: {},   //会员数据
@@ -17,22 +17,22 @@ const store = new Vuex.Store({
 		time : state => state.time 
 	},
 	mutations: {
-		vuelogin(state, provider) {
+		getopenid(state, provider) {
 
-			state.hasLogin = true;
+			//state.hasLogin = true;
 			
-			state.userInfo = provider;
+			state.openids = provider;
 			uni.setStorage({//缓存用户登陆状态
-			    key: 'userInfo',  
+			    key: 'openids',  
 			    data: provider  
 			}) 
 		},
-		vuelogout(state) {
-			state.hasLogin = false;
+		openidout(state) {
+			//state.hasLogin = false;
 
-			state.userInfo = {};
+			state.openid = '';
 			uni.removeStorage({  
-                key: 'userInfo'  
+                key: 'openids'  
             })
 		},
 		tempLogin(state){            //临时登录凭证
@@ -44,6 +44,13 @@ const store = new Vuex.Store({
 			uni.setStorage({
 				key : 'memberInfo' ,
 				data: mdata
+			})
+		},
+		memberLoginout(state){		//注册会员的注销
+			state.ismember = false
+			state.memberdata ={}
+			uni.removeStorage({
+				key :'memberInfo'
 			})
 		},
 		muttime(state, data) {

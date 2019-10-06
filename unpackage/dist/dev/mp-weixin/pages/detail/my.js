@@ -122,11 +122,11 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _objectSpread(target) {
 
   },
   computed: _objectSpread({},
-  (0, _vuex.mapState)(['hasLogin'])),
+  (0, _vuex.mapState)(['tempLogin', 'ismember'])),
 
   methods: {
     goTouserDetail: function goTouserDetail() {
-      if (this.hasLogin) {
+      if (this.ismember) {
         uni.navigateTo({
           url: '/pages/my/my' });
 

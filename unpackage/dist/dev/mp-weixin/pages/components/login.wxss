@@ -31,4 +31,7 @@
   width: 90rpx;
   height: 90rpx;
 }
+.confirm.data-v-2a3f3108 {
+  margin-top: 10rpx;
+}
 

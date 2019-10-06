@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- 画布来制作头像和会员卡等 -->
-		<canvas class ="userinfo" canvas-id="userinfo"></canvas>
+		<canvas class ="userinfo" canvas-id="userinfo" @tap="canvasavator"></canvas>
 		<view  class="Camera" 			
 			:style="[{
 				transform: coverTransform,
@@ -28,14 +28,14 @@
 <!-- 	登录功能框 -->		
 	<view class="function" v-else>
 		<view class="functionicon" v-for="item in listData" :key="item.id" @click="showFunction(item)">
-				<view v-if="item.id ==5 && ismember">           <!-- 如果是会员了，注册会员的按钮就变成设置按钮 -->
-					<span class="iconfont iconshezhi" ></span>
-						<p class="title">设置</p>
-				</view>
-				<view v-else>
+				<view >           <!-- 如果是会员了，注册会员的按钮就变成设置按钮 -->
 					<span class="iconfont" :class="item.icon" ></span>
 						<p class="title">{{item.title}}</p>
 				</view>
+<!-- 				<view v-else>
+					<span class="iconfont" :class="item.icon" ></span>
+						<p class="title">{{item.title}}</p>
+				</view> -->
 		</view>
 	</view>
 
@@ -69,13 +69,12 @@
 	let startY = 0, moveY = 0, pageAtTop = true;
 	export default {
 		onLoad(){
-			this.avator = this.userInfo.avatarUrl
 		},
 		mounted() {
 			this.getDrawUserInfo()
 		},
 		computed:{
-			...mapState(['userInfo','hasLogin','ismember' ])
+			...mapState(['tempLogin','ismember','openids' ,'memberdata'])
 		},
 		data() {
 			return {
@@ -104,7 +103,7 @@
 					url:"/pages/suggest/suggest",	
 					id:4 ,
 					},{
-					title: "注册会员",
+					title: "会员设置",
 					icon:"iconshezhi",
 					url:"/pages/regist/regist",
 					id:5,
@@ -146,10 +145,11 @@
 				 ctx.restore() //恢复之前保存的绘图上下文
 				 ctx.draw()
 				 ctx.setFillStyle('rgb(210,210,210)')
-				 ctx.setFontSize(16)
+				 ctx.setFontSize(14)
+				 ctx.fillText('尊敬的会员',10,90)
 				 ctx.fillText('NO.',5 ,160)
 				 ctx.setFontSize(12)
-				 ctx.fillText(this.userNum ,35 ,160)
+				 ctx.fillText(this.memberdata.phonenumber ,35 ,160)
 				 ctx.draw(true)
 			 },
 
@@ -186,6 +186,14 @@
 					//  this.coverTransform = 'translateY(0px)'
 				 // },3000)
 			},
+			canvasavator(e){
+				if( e.detail.x <108 && e.detail.x > 54 &&e.detail.y <73 &&e.detail.y >20 ){
+					uni.showToast({
+						title: '欢迎会员',
+						icon:'success'
+					})
+				}
+			},
 			showCamera(){
 				if(this.moveDis >=15){
 					console.log(this.moveDis)
@@ -211,14 +219,14 @@
 						})
 						return
 					}
-					else if(this.hasLogin) {
+					else if(this.templogin) {
 						uni.showToast({
 							title: '需要先注册会员',
 							icon:'none'
 						})
 						setTimeout(() => {
 							uni.navigateTo({
-								url: '/pages/regist/regist'
+								url: '/pages/regist/fastregist'
 							})
 						}, 1000)
 						return
@@ -228,19 +236,20 @@
 					if(this.ismember){
 						this.nomemeber = true
 						this.getmemberuser().then( res =>{
-							this.memeberList[0].data = res.data[0].point
+							console.log(res)
+							this.memeberList[0].data = res.data.point
 							this.memeberList[1].data = res.level
 						})
 						return
 					}
-					else if(this.hasLogin) {
+					else if(this.templogin) {
 						uni.showToast({
 							title: '需要先注册会员',
 							icon:'none'
 						})
 						setTimeout(() => {
 							uni.navigateTo({
-								url: '/pages/regist/regist'
+								url: '/pages/regist/fastregist'
 							})
 						}, 1000)
 						return
@@ -253,14 +262,14 @@
 						})
 						return
 					}
-					else if( this.hasLogin) {	//如果是非会员，需要跳转到会员注册页面
+					else if(this.templogin) {	//如果是非会员，需要跳转到会员注册页面
 						uni.showToast({
 							title: '需要先注册会员',
 							icon:'none'
 						})
 						setTimeout(() => {
 							uni.navigateTo({
-								url: '/pages/regist/regist'
+								url: '/pages/regist/fastregist'
 							})
 						}, 1000)
 						return
@@ -286,14 +295,14 @@
 				 	})
 				 	return
 				 }
-				 else if(this.hasLogin) {
+				 else if(this.templogin) {
 				 	uni.showToast({
 				 		title: '需要先注册会员',
 				 		icon:'none'
 				 	})
 				 	setTimeout(() => {
 				 		uni.navigateTo({
-				 			url: '/pages/regist/regist'
+				 			url: '/pages/regist/fastregist'
 				 		})
 				 	}, 1000)
 				 	return
@@ -307,8 +316,9 @@
 			 },
 			async getmemberuser( ){
 				const data = await get('/api/XCX/getmemberuser',{
-					openid: this.userInfo.openId
+					openid: this.openids.openid
 				})
+				console.log(data)
 				return data
 			}
 			 

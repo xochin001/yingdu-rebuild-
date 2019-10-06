@@ -37,8 +37,11 @@
             "style" : {"navigationBarTitleText": "投诉建议,"}
         }
         ,{
+            "path" : "pages/regist/fastregist",
+            "style" : {"navigationBarTitleText": "快捷注册"}
+        },{
             "path" : "pages/regist/regist",
-            "style" : {"navigationBarTitleText": "注册会员"}
+            "style" : {"navigationBarTitleText": "手机注册"}
         }
         ,{
             "path" : "pages/picture/picture",

@@ -57,34 +57,37 @@
 					logo: '/static/lee-search/icon_search.png'
 				},
 				avatar:'/static/user.png',
-				showLogin :"login",
+				showLogin :"Image",
 			}	
 		},
-		mounted() {
-			if(this.hasLogin) {
+		mounted(){
+			
+		},
+		onShow() {
+			if(this.ismember) {
 				this.showLogin = ""
-				this.avatar = this.userInfo.avatarUrl
+
 			}if(this.tempLogin){
 				this.showLogin = ""
 			}
 		},
 		computed:{
-			...mapState(['userInfo','tempLogin','hasLogin'])
+			...mapState(['tempLogin','ismember'])
 		},
 		methods: {
-			//...mapMutations([])
 			ontabtap(e) {
 			    let index = e.target.dataset.current || e.currentTarget.dataset.current
 			     this.tabIndex = index
 			     this.scrollInto = this.tabBars[index].id
 		},
 		hiddendiag(){
-			uni.redirectTo({
-				url: '/pages/index/index'
-			})
+			// uni.redirectTo({
+			// 	url: '/pages/index/index'
+			// })
+			this.showLogin = ""
 		},
 		gtLogin(){
-			this.showLogin = 'login'
+			this.showLogin = 'Image'
 		}
 		
 	},

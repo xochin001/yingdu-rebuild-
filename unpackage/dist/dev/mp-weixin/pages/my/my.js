@@ -193,13 +193,12 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
 var startY = 0,moveY = 0,pageAtTop = true;var _default =
 {
   onLoad: function onLoad() {
-    this.avator = this.userInfo.avatarUrl;
   },
   mounted: function mounted() {
     this.getDrawUserInfo();
   },
   computed: _objectSpread({},
-  (0, _vuex.mapState)(['userInfo', 'hasLogin', 'ismember'])),
+  (0, _vuex.mapState)(['tempLogin', 'ismember', 'openids', 'memberdata'])),
 
   data: function data() {
     return {
@@ -228,7 +227,7 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
         url: "/pages/suggest/suggest",
         id: 4 },
       {
-        title: "注册会员",
+        title: "会员设置",
         icon: "iconshezhi",
         url: "/pages/regist/regist",
         id: 5 }],
@@ -270,10 +269,11 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
       ctx.restore(); //恢复之前保存的绘图上下文
       ctx.draw();
       ctx.setFillStyle('rgb(210,210,210)');
-      ctx.setFontSize(16);
+      ctx.setFontSize(14);
+      ctx.fillText('尊敬的会员', 10, 90);
       ctx.fillText('NO.', 5, 160);
       ctx.setFontSize(12);
-      ctx.fillText(this.userNum, 35, 160);
+      ctx.fillText(this.memberdata.phonenumber, 35, 160);
       ctx.draw(true);
     },
 
@@ -310,6 +310,14 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
       //  this.coverTransform = 'translateY(0px)'
       // },3000)
     },
+    canvasavator: function canvasavator(e) {
+      if (e.detail.x < 108 && e.detail.x > 54 && e.detail.y < 73 && e.detail.y > 20) {
+        uni.showToast({
+          title: '欢迎会员',
+          icon: 'success' });
+
+      }
+    },
     showCamera: function showCamera() {var _this = this;
       if (this.moveDis >= 15) {
         console.log(this.moveDis);
@@ -335,14 +343,14 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
 
           return;
         } else
-        if (this.hasLogin) {
+        if (this.templogin) {
           uni.showToast({
             title: '需要先注册会员',
             icon: 'none' });
 
           setTimeout(function () {
             uni.navigateTo({
-              url: '/pages/regist/regist' });
+              url: '/pages/regist/fastregist' });
 
           }, 1000);
           return;
@@ -352,19 +360,20 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
         if (this.ismember) {
           this.nomemeber = true;
           this.getmemberuser().then(function (res) {
-            _this2.memeberList[0].data = res.data[0].point;
+            console.log(res);
+            _this2.memeberList[0].data = res.data.point;
             _this2.memeberList[1].data = res.level;
           });
           return;
         } else
-        if (this.hasLogin) {
+        if (this.templogin) {
           uni.showToast({
             title: '需要先注册会员',
             icon: 'none' });
 
           setTimeout(function () {
             uni.navigateTo({
-              url: '/pages/regist/regist' });
+              url: '/pages/regist/fastregist' });
 
           }, 1000);
           return;
@@ -377,14 +386,14 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
 
           return;
         } else
-        if (this.hasLogin) {//如果是非会员，需要跳转到会员注册页面
+        if (this.templogin) {//如果是非会员，需要跳转到会员注册页面
           uni.showToast({
             title: '需要先注册会员',
             icon: 'none' });
 
           setTimeout(function () {
             uni.navigateTo({
-              url: '/pages/regist/regist' });
+              url: '/pages/regist/fastregist' });
 
           }, 1000);
           return;
@@ -410,14 +419,14 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
 
         return;
       } else
-      if (this.hasLogin) {
+      if (this.templogin) {
         uni.showToast({
           title: '需要先注册会员',
           icon: 'none' });
 
         setTimeout(function () {
           uni.navigateTo({
-            url: '/pages/regist/regist' });
+            url: '/pages/regist/fastregist' });
 
         }, 1000);
         return;
@@ -431,9 +440,10 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
     },
     getmemberuser: function () {var _getmemberuser = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var data;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                   (0, _request.get)('/api/XCX/getmemberuser', {
-                    openid: this.userInfo.openId }));case 2:data = _context.sent;return _context.abrupt("return",
+                    openid: this.openids.openid }));case 2:data = _context.sent;
 
-                data);case 4:case "end":return _context.stop();}}}, _callee, this);}));function getmemberuser() {return _getmemberuser.apply(this, arguments);}return getmemberuser;}() } };exports.default = _default;
+                console.log(data);return _context.abrupt("return",
+                data);case 5:case "end":return _context.stop();}}}, _callee, this);}));function getmemberuser() {return _getmemberuser.apply(this, arguments);}return getmemberuser;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

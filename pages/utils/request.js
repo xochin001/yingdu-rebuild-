@@ -71,10 +71,10 @@ export function toLogin() {
   }
 }
 
-export function login() {
-  const userInfo = wx.getStorageSync('userInfo');
-  if (userInfo) {
-    return userInfo;
+export function openid() {
+  const openid = wx.getStorageSync('openid');
+  if (openid) {
+    return openid;
   }
 }
 
@@ -83,6 +83,33 @@ export function memberlogin() {
 	if(memberInfo) {
 		return memberInfo
 	}
+}
+
+export function getcloud(name ,data) {
+	wx.showLoading({
+	  title: '加载中' //数据请求前loading
+	})
+	return new Promise((resolve, reject) => {
+		wx.cloud.callFunction({
+			name: name ,
+			data: data,
+			success: function(res){
+				 wx.hideLoading();
+				resolve(res.result)
+				
+				
+			},
+			fail: function (error) {
+				 wx.hideLoading();
+				 console.log(error)
+			  reject(false)
+			  
+			},
+			complete: function () {
+				 wx.hideLoading();
+			}
+		})
+	})
 }
 
 //----------------------------------------------用户是否登录 未登录跳转到登录页面 -------------------------

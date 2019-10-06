@@ -15,11 +15,11 @@
 			}
 		},
 		computed:{
-			...mapState(['hasLogin'])
+			...mapState(['tempLogin','ismember'])
 		},
 		methods:{
 			goTouserDetail(){
-				if(this.hasLogin){
+				if(this.ismember){
 					uni.navigateTo({
 						url :'/pages/my/my'
 					})

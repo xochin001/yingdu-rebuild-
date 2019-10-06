@@ -5,34 +5,28 @@
 				<view class="cu-form-group">
 					<view class="title text-black ">手机号码:</view>
 					<input type="number" placeholder="请输入手机号" v-model="phonenumber" name="phonenumber" @blur="checkphonenumber(phonenumber)"></input>
-					<view class="cu-capsule radius">
-						<view class='cu-tag bg-blue '>
-							+86
-						</view>
-						<view class="cu-tag line-blue">
-							中国大陆
-						</view>
-					</view>
+					<button class='cu-btn line-brown text-brown' v-if="timestart" >{{time}}s后重新发送</button>
+					<button class='cu-btn line-brown text-brown' v-else @tap="getvaild" >{{timeTitle}}</button>
 				</view>
 				<view class="cu-form-group">
+					<view class="title text-black ">验证码:</view>
 					<input placeholder="请输入验证码" v-model="phonevaild" name="phonevaild" @blur="checkvaild(phonevaild)"></input>
-					<button class='cu-btn bg-brown2 shadow' v-if="timestart" >{{time}}s后重新发送</button>
-					<button class='cu-btn bg-brown2 shadow' v-else @tap="getvaild" >{{timeTitle}}</button>
 				</view>
 				<view class="cu-form-group solid-bottom">
 					<view class="title">请选择生日</view>
-					<picker mode="date" name="brithday" :value="brithday" start="1950-09-01" end="2019-09-01" @change="DateChange">
-						<view class="picker">
+					<picker mode="date" name="brithday" :value="brithday" start="1950-09-01" end="2012-09-01" @change="DateChange">
+						<view class="picker text-brown">
 							{{brithday||'请选择'}}
 						</view>
 					</picker>
 				</view>
 				<view class="confirm margin-tb-xl">
 					<button form-type="submit" class="cu-btn b-t block lg bg-brown2 text-white">会员修改</button>
+					<text class="text-red  text-sm" @tap="testdeletemember" >临时测试会员删除</text>
 				</view>
 			</form>
 
-
+						
 		</view>
 	</view>
 </template>
@@ -55,7 +49,7 @@
 			}
 		},
 		computed:{
-			...mapState(['userInfo' ,'time' ,'hastime','memberdata'])
+			...mapState([ 'time' ,'hastime','memberdata'])
 		},
 		onShow() {
 			this.phonenumber = this.memberdata.phonenumber
@@ -92,24 +86,28 @@
 					const data = {
 						'phonenumber' : formData.phonenumber,
 						'brithday' : formData.brithday,
-						'openid' : this.userInfo.openId
+						'openid' : this.memberdata.openid
 					}
 					this.geteditmemberuser(data).then( pres => {
 						if(pres.code == 200){
-							setTimeout(
-								uni.showToast({
-									title: "修改成功！",
-									icon: "success",
-								})
+							var timer = setTimeout(
+								function(){
+									uni.showToast({
+										title: "修改成功！",
+										icon: "success",
+									})
+								}
 							,500)
-							uni.redirectTo({
-								url:'/pages/my/my'
-							})
+							clearTimeout(timer)
+
 
 						}
 					})
-					this.getmemberuser(this.userInfo).then ( pres => {		//验证通过后，重新从数据库获取会员数据并赋值给页面。
+					this.getmemberuser(this.memberdata).then ( pres => {		//验证通过后，重新从数据库获取会员数据并赋值给页面。
 						this.$store.commit('memberLogin' , pres)
+						uni.redirectTo({
+							url:'/pages/my/my'
+						})
 					})
 					
 				return	
@@ -176,13 +174,16 @@
 			},
 			async getmemberuser( res){							//重新获取会员的接口
 				const data = await get('/api/XCX/getmemberuser',{
-					openid:res.openId
+					openid:res.openid
 				})
 				return data.data
 			},
 			checkphonenumber(e){
+				let d = {
+					phonenumber :e
+				}
 				let rule = [{name:"phonenumber" ,checkType : "phoneno", checkRule:"",  errorMsg:"请输入正确电话号码"}];
-				var p = graceChecker.check( e ,rule)
+				var p = graceChecker.check( d , rule)
 				if(p){
 					this.vaildsuccess = false  //逻辑上给一个获取验证码的通行。
 					return
@@ -193,6 +194,20 @@
 					})
 					this.vaildsuccess = true  // 既然电话号码没有验证通过，那么就不能点击获取验证码
 				}
+			},
+			//测试用，要删除
+			async testdeletemember() {
+				const res = await get('/api/XCX/deletememberuser',{
+					openid :this.memberdata.openid
+				})
+				if(res){
+					console.log('删除成功')
+					this.$store.commit('memberLoginout')
+					uni.redirectTo({
+						url: '/pages/my/my'
+					});
+				}
+				
 			}
 			
 		}

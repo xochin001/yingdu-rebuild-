@@ -5,24 +5,20 @@
 				<view class="cu-form-group">
 					<view class="title text-black ">手机号码:</view>
 					<input type="number" placeholder="请输入手机号" v-model="phonenumber" name="phonenumber" @blur="checkphonenumber(phonenumber)"></input>
+					<button class='cu-btn line-brown text-brown' v-if="timestart" >{{time}}s后重新发送</button>
+					<button class='cu-btn line-brown text-brown' v-else @tap="getvaild" >{{timeTitle}}</button>
 					<view class="cu-capsule radius">
-						<view class='cu-tag bg-blue '>
-							+86
-						</view>
-						<view class="cu-tag line-blue">
-							中国大陆
-						</view>
+
 					</view>
 				</view>
 				<view class="cu-form-group">
+					<view class="title text-black margin-right">验证码:</view>
 					<input placeholder="请输入验证码" v-model="phonevaild" name="phonevaild" @blur="checkvaild(phonevaild)"></input>
-					<button class='cu-btn bg-brown2 shadow' v-if="timestart" >{{time}}s后重新发送</button>
-					<button class='cu-btn bg-brown2 shadow' v-else @tap="getvaild" >{{timeTitle}}</button>
 				</view>
 				<view class="cu-form-group solid-bottom">
 					<view class="title">请选择生日</view>
 					<picker mode="date" name="brithday" :value="brithday" start="1950-09-01" end="2012-09-01" @change="DateChange">
-						<view class="picker">
+						<view class="picker text-brown">
 							{{brithday||'请选择'}}
 						</view>
 					</picker>
@@ -58,7 +54,7 @@
 			}
 		},
 		computed:{
-			...mapState(['userInfo' ,'time' ,'hastime'])
+			...mapState(['openids' ,'time' ,'hastime'])
 		},
 		watch: {
 			time : {						//对定时器的时间进行深度监视，如果时间为1.（定时器设置快了1秒），将定时器的flag设置为false
@@ -77,13 +73,14 @@
 		},
 		methods:{
 			submit(e){
+				console.log(e)
 				var _this = this
 				// 表单验证
 				let rule =[
 					{name:"phonenumber" ,checkType : "phoneno", checkRule:"",  errorMsg:"请输入正确电话号码"},
 					{name:"phonevaild" ,checkType : "notnull", checkRule:"",  errorMsg:"验证码不能为空"},
 					{name:"phonevaild" ,checkType : "same", checkRule:this.vaild,  errorMsg:"验证码匹配失败"},
-					{name:"brithday" ,checkType : "notsame", checkRule:"请选择",  errorMsg:"请选择生日"},
+					 {name:"brithday" ,checkType : "notsame", checkRule:"请选择",  errorMsg:"请选择生日"},
 				];
 				let formData = e.detail.value
 				let checkRes = graceChecker.check(formData , rule)
@@ -91,18 +88,21 @@
 				//验证通过后，准备上传后台数据库存放会员ID。 会员ID使用电话号码作为ID。	
 				  this.postmember(formData).then( res  =>{
 					  //const pdata =  JSON.stringify(_this.data)
-					  if(res.code ==200){
-					  	uni.showToast({
-					  		title: "已经成功提交！",
-					  		icon: "success",
-					  	})
-						this.$store.commit('memberLogin',_this.data)
-						uni.redirectTo({
-							url:'/pages/my/my'
-						})
-
-					  }
-					  
+						if(res.code ==200){
+						setTimeout(
+							function(){
+								uni.showToast({
+									title: "已成功提交！",
+									icon: "success",
+								})
+							},500)
+						this.getmemberuser(this.openids.openid).then (res1=>{
+							this.$store.commit('memberLogin',res1)
+							uni.redirectTo({
+								url:'/pages/index/index'
+								})
+							})
+						}
 				  })
 			return
 				}else {
@@ -165,8 +165,7 @@
 			},
 			async postmember(users){
 				this.data = {
-					'openid' : this.userInfo.openId,
-					'username': this.userInfo.nickName,
+					'openid' : this.openids.openid,
 					'phonenumber' : users.phonenumber,
 					'brithday' : users.brithday
 				}
@@ -174,10 +173,13 @@
 				return res
 			},
 			checkphonenumber(e){
-				let rule = [{name:"phonenumber" ,checkType : "phoneno", checkRule:"",  errorMsg:"请输入正确电话号码"}];
-				var p = graceChecker.check( e ,rule)
+				let d = {
+					phonenumber :e
+				}
+				let rule = [{name:"phonenumber" ,checkType : "phoneno", checkRule:"",  errorMsg:"请1输入正确电话号码"}];
+				var p = graceChecker.check( d ,rule)
 				if(p){
-					
+					this.vaildsuccess = false
 					return
 				}else {
 					uni.showToast({
@@ -186,7 +188,13 @@
 					})
 					this.vaildsuccess = true  // 既然电话号码没有验证通过，那么就不能点击获取验证码
 				}
-			}
+			},
+			async getmemberuser (res){
+				const data = await get('/api/XCX/getmemberuser',{
+					openid : res.openid
+				})
+				return data.data
+			},
 			
 		}
 	}

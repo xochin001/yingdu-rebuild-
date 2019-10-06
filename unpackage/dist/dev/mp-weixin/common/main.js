@@ -101,29 +101,43 @@ var _vuex = __webpack_require__(/*! vuex */ 12);
 var _request = __webpack_require__(/*! @/pages/utils/request */ 13);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 {
   methods: _objectSpread({},
-  (0, _vuex.mapMutations)(['vuelogin', 'memberLogin']), {
-    getopenid: function getopenid() {
-      wx.cloud.callFunction({
-        name: 'getuserinfo',
-        data: {},
-        success: function success(res) {
-          console.log('没获取到？');
-          console.log(res);
-        } });
+  (0, _vuex.mapMutations)(['getopenid', 'memberLogin'])),
 
-    } }),
+
+
+
+
+
+
+
+
+
 
   onLaunch: function onLaunch() {
     wx.getSystemInfo({
       success: function success(res) {
-        console.log(res.version);
       } });
 
-    this.getopenid();
-    if ((0, _request.login)()) {
-      var res = (0, _request.login)(); //全局加载非登录会员的状态
-      this.vuelogin(res);
-    }if ((0, _request.memberlogin)()) {//全局开始加载登录会员的状态
+    // wx.login({
+    // 	success: res=>{
+    // 		let data = {
+    // 			sessionCode : res.code,
+    // 			secret : '79c4f3809c5512293ba1a206eaadbedb'
+    // 		}
+    // 		this.getopenId(data).then ( res=>{
+    // 			this.getopenid(res)
+    // 			this.getmemberuser(res).then (res1 =>{
+    // 				if(res1){
+    // 					this.memberLogin(res1)
+    // 					console.log(res1)
+    // 				}
+
+    // 			})
+    // 		})
+    // 	}
+    // })
+
+    if ((0, _request.memberlogin)()) {//全局开始加载登录会员的状态
       var data = (0, _request.memberlogin)();
       this.memberLogin(data);
     }

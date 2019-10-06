@@ -1,28 +1,27 @@
 <template>
 	<view>
-		<view class="cu-modal" :class="modalName=='login'?'show':''">
+		<view class="cu-modal" :class="modalName=='Image'?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
-					<view class="content">微信登录</view>
-					<view class="action" @tap="hideModal">
-						<text class="cuIcon-close text-red"></text>
+					<view class="content">英度云商</view>
+					<view class="cu-bar justify-end text-black">
+						<view class="action" @tap="hideModal">
+							<text class="cuIcon-close "></text>
+						</view>
 					</view>
 				</view>
 				<view class="padding-xl">
-					<view class="header">
-						<img :src="login" alt="">
-					</view>
-					<view class="contentw">
-						<view>申请获取以下权限</view>
-						<text>获得你的公开信息（昵称，头像）</text>
-					</view>
-				</view>
-				<view class="cu-bar bg-white justify-end">
-					<view class="action">
-						<button class="cu-btn bg-green " open-type="getUserInfo"  @getuserinfo="confirm">确定</button>
-						<!-- <button class="cu-btn line-green text-green margin-left" @tap="hideModal">取消</button> -->
-						
-		
+					<view class="header center">
+						<view class="confirm ">
+							<button  class="cu-btn b-t block lg bg-brown2 text-white" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信快捷注册</button>
+							</view>
+						<view class="b-b margin-tb-sm paddin-sm"><p class="text-grey text-sm text-center ">-其他登录方式-</p></view>
+						<view class="confirm ">
+							<button  class="cu-btn b-t block  line-orange lg   text-brown" @tap="gtphoneregist">手机号登录</button>
+						</view>
+						<view class="margin-sm ">
+							<text class="text-brown text-sm">登录注意事项</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -33,82 +32,111 @@
 
 <script>
 	import { mapState } from 'vuex';
-	import {host ,get} from '@/pages/utils/request'
-	var qcloud = require("wafer2-client-sdk/index.js")
+	import {get , post, getcloud } from '@/pages/utils/request'
 	export default{
 		props:{
 			modalName: String,
 			
 		},
 		mounted(){
-			qcloud.setLoginUrl(host + "/api/login")
+			wx.login({
+				success: res=>{
+					let data = {
+						sessionCode : res.code,
+						secret : '79c4f3809c5512293ba1a206eaadbedb'
+					}
+					this.getopenId(data).then ( res=>{
+						this.$store.commit('getopenid',res)
+						this.getmemberuser(res).then ( res1 =>{
+							if(res1){
+								this.$store.commit('memberLogin',res1)
+								this.$emit('hiddendiag')
+							}
+						})
+					})
+				}
+			})
 		},
 		computed:{
-		...mapState(['hasLogin' ,'tempLogin'])  //tempLogin 是一个临时登录凭证。可以看商店详情。
+			...mapState(['openids'])
 		},
 		data(){
 			return{
-				login : '/static/wx_login.png',
+				pdata : {} , //存储注册手机的基本信息
 			}
 		},
 		methods:{
-			async confirm(e){
-				if(e.detail.userInfo){
-					wx.showLoading({
-					  title: "登录中...", //提示的内容,
-					  mask: true, //显示透明蒙层，防止触摸穿透,
-					  success: res => {}
-					});
-					const session = qcloud.Session.get();
-					if (session) {
-					  // 第二次登录
-					  // 或者本地已经有登录态
-					  // 可使用本函数更新登录态
-					  qcloud.loginWithCode({
-					    success: res => {
-							this.getmemberuser(res).then( pres =>{
-								console.log(pres)
-							   if(pres.length >1 )
-							   this.$store.commit('memberLogin' , pres)
-							})
-						 this.$store.commit('vuelogin',res)
-						 this.$emit('tologin')
-					    },
-					    fail: err => {
-					      console.error(err)
-					    }
-					  });
-					} else {
-					 qcloud.login({
-						 success: res => {
-							 // console.log(res.openId)
-						   wx.hideLoading()
-						   this.getmemberuser(res).then( pres =>{
-							   console.log(pres)
-							   if(pres)
-							   this.$store.commit('memberLogin' , pres[0])
-						   })
-						   this.$store.commit('vuelogin',res)
-						   this.$emit('hiddendiag')
-						   }
-						})
-					}		
-				}else{
-					this.$store.commit('tempLogin')
-					this.$emit('hiddendiag') //不同意 就给一个临时访问token 
+			async getPhoneNumber(e){
+				var _this = this
+				uni.checkSession({
+					success : res => {
+						console.log('session有效')
+
+					},
+					fail: res =>{
+						console.log('session无效诶')
+					}
+				})
+
+				let data = {
+					iv : e.detail.iv,
+					encryptedData :  e.detail.encryptedData,
+					openid: this.openids.openid,
+					session_key : this.openids.session_key
 				}
+				const phonedata = await get('/api/XCX/getphonenumber',data)
+
+				this.postmember(phonedata.data.phoneNumber).then(res =>{
+					//console.log(res)
+					if(res.code ==200){
+					setTimeout(
+						function(){
+							uni.showToast({
+								title: "已成功提交！",
+								icon: "success",
+							})
+						},500)
+					this.getmemberuser(this.opendis).then (res1=>{
+						this.$store.commit('memberLogin',res1)
+						uni.redirectTo({
+							url:'/pages/index/index'
+							})
+				    	})
+					}
+				})
 			},
+			async getopenId(data){				//在mount生命周期给触发调取openid的函数
+				const res = await getcloud('getuserinfo',data)
+				return res
+			},
+		
 			hideModal(){
 				this.$store.commit('tempLogin')
 				this.$emit('hiddendiag')  //不同意 就给一个临时访问token ,退出就失效
 				
 			},		
-			async getmemberuser( res){
+			async postmember(phones){
+				this.pdata = {
+					'openid' : this.openids.openid,
+					'phonenumber' : phones ,
+					 'brithday' : '1970-1-1'
+				}
+				const res = await post('/api/XCX/postmemberuser',this.pdata)
+				console.log(res)
+				return res
+			},	
+			async getmemberuser (res){
 				const data = await get('/api/XCX/getmemberuser',{
-					openid:res.openId
+					openid : res.openid
 				})
 				return data.data
-			}
+			},
+			gtphoneregist (){
+				uni.navigateTo({
+					url : '/pages/regist/regist'
+				})
+			},
+			
 		}
 	}
 </script>
@@ -125,5 +153,8 @@
 	
 	.content {
 		
+	}
+	.confirm {
+		margin-top: 10upx;
 	}
 </style>
